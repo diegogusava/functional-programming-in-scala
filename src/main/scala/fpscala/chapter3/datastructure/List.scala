@@ -129,4 +129,14 @@ object List {
     case (Nil, Nil) => Nil
   }
 
+  def hasSubsequence(list1: List[Int], list2: List[Int]): Boolean = {
+    def find(rem1: List[Int], rem2: List[Int]): Boolean = (rem1, rem2) match {
+      case (Cons(x, xs), Cons(y, ys)) => if (x == y) find(xs, ys) else find(xs, list2)
+      case (Cons(x, xs), Nil) => true
+      case (Nil, Cons(y, ys)) => false
+      case (Nil, Nil) => true
+    }
+    find(list1, list2)
+  }
+
 }

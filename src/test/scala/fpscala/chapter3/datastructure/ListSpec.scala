@@ -167,8 +167,22 @@ class ListSpec extends FlatSpec {
     }
 
     assert(List.zipWith(List(1, 2, 3), List(4, 5, 6))(operation) == List(5, 7, 9))
-    assert(List.zipWith(List(1, 2), List(4, 5, 6))(operation)  == List(5, 7, 6))
-    assert(List.zipWith(List(1, 2, 3), List(4, 5))(operation)  == List(5, 7, 3))
+    assert(List.zipWith(List(1, 2), List(4, 5, 6))(operation) == List(5, 7, 6))
+    assert(List.zipWith(List(1, 2, 3), List(4, 5))(operation) == List(5, 7, 3))
+  }
+
+  it should "Exercise 3.24:  implement hasSubsequence for checking whether a List contains another List " +
+    "as a subsequence." in {
+
+    assert(List.hasSubsequence(List(1, 2, 3, 4), List()) == true)
+    assert(List.hasSubsequence(List(1, 2, 3, 4), List(1, 2)) == true)
+    assert(List.hasSubsequence(List(1, 2, 3, 4), List(2, 3)) == true)
+    assert(List.hasSubsequence(List(1, 2, 3, 4), List(3, 4)) == true)
+    assert(List.hasSubsequence(List(1, 2, 3, 4), List(3)) == true)
+    assert(List.hasSubsequence(List(1, 2, 3, 4), List(1, 4)) == false)
+    assert(List.hasSubsequence(List(1, 2, 3, 4), List(0)) == false)
+    assert(List.hasSubsequence(List(1, 2, 3, 4), List(2, 4)) == false)
+    assert(List.hasSubsequence(List(1, 2, 3, 4), List(1, 4)) == false)
   }
 
 }
