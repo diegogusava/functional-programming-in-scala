@@ -21,6 +21,18 @@ trait Stream[+A] {
     case Cons(h, t) if p(h()) => Stream.cons(h(), t() takeWhile p)
     case _ => Stream.empty
   }
+
+  def foldRight[B](z: => B)(f: (A, => B) => B): B = this match {
+    case Cons(h, t) => f(h(), t().foldRight(z)(f))
+    case _ => z
+  }
+
+  def exist(p: A => Boolean): Boolean = foldRight(false)((a, b) => p(a) || b)
+
+  def forAll(p: A => Boolean): Boolean = foldRight(true)((a, b) => if (p(a)) b else false)
+
+  def takeWhile2(p: A => Boolean): Stream[A] = foldRight(Stream.empty[A])((a, b) =>
+    if (p(a)) Stream.cons(a, b) else Stream.empty)
 }
 
 case object Empty extends Stream[Nothing]
