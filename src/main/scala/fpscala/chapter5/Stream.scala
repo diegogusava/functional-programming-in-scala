@@ -33,6 +33,19 @@ trait Stream[+A] {
 
   def takeWhile2(p: A => Boolean): Stream[A] = foldRight(Stream.empty[A])((a, b) =>
     if (p(a)) Stream.cons(a, b) else Stream.empty)
+
+  def headOption: Option[A] = foldRight(None: Option[A])((h, _) => Some(h))
+
+  def map[B](f: A => B): Stream[B] = foldRight(Stream.empty[B])((e, s) => {
+    println(e)
+    Stream.cons(f(e), s)
+  })
+
+  def filter(f: A => Boolean): Stream[A] = foldRight(Stream.empty[A])((e, s) => if (f(e)) Stream.cons(e, s) else s)
+
+  def append[B>:A](s: => Stream[B]): Stream[B] = foldRight(s)((e, s) => Stream.cons(e, s))
+
+  def flatMap[B](f: A => Stream[B]): Stream[B] = foldRight(Stream.empty[B])((e, s) => f(e) append s )
 }
 
 case object Empty extends Stream[Nothing]
