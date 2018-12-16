@@ -67,4 +67,20 @@ class StreamTest extends FunSuite {
     assert(Stream(1, 2, 3).flatMap(x => Stream(x + 1)).toList == List(2, 3, 4))
     assert(Stream[Int]().flatMap(x => Stream(x + 1)).toList == List())
   }
+
+  test("Exercise 5.8: Generalize ones slightly to the function constant, which returns an infinite Stream " +
+    "of a given value.") {
+    assert(Stream.constant(1).take(5) == List(1, 1, 1, 1, 1))
+  }
+
+  test("Exercise 5.9: Write a function that generates an infinite stream of integers, starting from n, " +
+    "then n + 1, n + 2, and so on.") {
+    assert(Stream.from(1).take(5) == List(1, 2, 3, 4, 5))
+  }
+
+  test("Exercise 5.10: Write a function fibs that generates the infinite stream of Fibonacci numbers: 0, 1, " +
+    "1, 2, 3, 5, 8, and so on.") {
+    assert(Stream.fibs.take(7) == List(0, 1, 1, 2, 3, 5, 8))
+  }
+
 }

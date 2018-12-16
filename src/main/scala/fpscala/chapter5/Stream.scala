@@ -43,9 +43,10 @@ trait Stream[+A] {
 
   def filter(f: A => Boolean): Stream[A] = foldRight(Stream.empty[A])((e, s) => if (f(e)) Stream.cons(e, s) else s)
 
-  def append[B>:A](s: => Stream[B]): Stream[B] = foldRight(s)((e, s) => Stream.cons(e, s))
+  def append[B >: A](s: => Stream[B]): Stream[B] = foldRight(s)((e, s) => Stream.cons(e, s))
 
-  def flatMap[B](f: A => Stream[B]): Stream[B] = foldRight(Stream.empty[B])((e, s) => f(e) append s )
+  def flatMap[B](f: A => Stream[B]): Stream[B] = foldRight(Stream.empty[B])((e, s) => f(e) append s)
+
 }
 
 case object Empty extends Stream[Nothing]
@@ -64,4 +65,13 @@ object Stream {
   def apply[A](as: A*): Stream[A] =
     if (as.isEmpty) empty
     else cons(as.head, apply(as.tail: _*))
+
+  def constant[A](a: A): Stream[A] = Stream.cons(a, constant(a))
+
+  def from(n: Int): Stream[Int] = Stream.cons(n, from(n + 1))
+
+  def fibs: Stream[Int] = {
+    def process(first: Int, second: Int): Stream[Int] = cons(first, process(second, first + second))
+    process(0, 1)
+  }
 }
